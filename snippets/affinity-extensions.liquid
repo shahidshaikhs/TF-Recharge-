@@ -4,6 +4,7 @@
 
   Current extensions:
   - "Did you know" custom_extension data bridge (metaobject: did_you_know_upcoming_orders)
+  - FAQ accordion (schedule.footer slot, metaobject: faq_recharge_footer)
 {%- endcomment -%}
 
 {%- comment -%} === 1. Portal CSS === {%- endcomment -%}
@@ -191,6 +192,82 @@
     font-size: 11px;
     line-height: 13px;
   }
+
+  /* --- FAQ accordion (schedule.footer slot) --- */
+
+  .cf-faq {
+    background-color: #FFFFFF;
+    padding: 16px;
+    margin-block-start: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .cf-faq__title {
+    font-family: var(--font-heading--family);
+    font-weight: 400;
+    font-size: 36px;
+    line-height: 47px;
+    letter-spacing: -0.36px;
+    color: #000000;
+    margin: 0;
+  }
+
+  .cf-faq__list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .cf-faq__item {
+    border-top: 1px solid #E5E5E5;
+  }
+
+  .cf-faq__item:last-child {
+    border-bottom: 1px solid #E5E5E5;
+  }
+
+  .cf-faq__question {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 0;
+    list-style: none;
+    cursor: pointer;
+  }
+
+  .cf-faq__question::-webkit-details-marker {
+    display: none;
+  }
+
+  .cf-faq__question-text {
+    font-family: var(--font-body--family);
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 26px;
+    letter-spacing: -0.2px;
+    color: #202635;
+    margin: 0;
+  }
+
+  .cf-faq__chevron {
+    flex-shrink: 0;
+    transition: transform 0.3s ease;
+  }
+
+  .cf-faq__item[open] .cf-faq__chevron {
+    transform: rotate(180deg);
+  }
+
+  .cf-faq__answer {
+    font-family: var(--font-body--family);
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 22px;
+    color: #202635;
+    margin: 0;
+    padding-bottom: 24px;
+  }
 </style>
 
 {%- comment -%} === 2. Slot templates === {%- endcomment -%}
@@ -198,6 +275,7 @@
 {%- liquid
   assign dyk_sub = shop.metaobjects.did_you_know_subscriptions_footer.values | first
   assign articles_wrapper = shop.metaobjects.articles_recharge_subscription_footer.values | first
+  assign faq_wrapper = shop.metaobjects.faq_recharge_footer.values | first
 -%}
 
 {%- if dyk_sub != blank or articles_wrapper != blank -%}
@@ -263,6 +341,35 @@
         </div>
       </div>
     {%- endif -%}
+  </script>
+{%- endif -%}
+
+{%- if faq_wrapper != blank -%}
+  <script type="text/html" data-recharge-slot="schedule.footer">
+    <div class="cf-faq">
+      {%- if faq_wrapper.title.value != blank -%}
+        <h2 class="cf-faq__title">{{ faq_wrapper.title.value }}</h2>
+      {%- endif -%}
+      {%- if faq_wrapper.faq.value != blank -%}
+        <div class="cf-faq__list">
+          {%- for item in faq_wrapper.faq.value -%}
+            {%- if item.question.value != blank -%}
+              <details class="cf-faq__item">
+                <summary class="cf-faq__question">
+                  <span class="cf-faq__question-text">{{ item.question.value }}</span>
+                  <svg class="cf-faq__chevron" width="16" height="9" viewBox="0 0 16 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M1 1L8 8L15 1" stroke="#202635" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </summary>
+                {%- if item.answer.value != blank -%}
+                  <div class="cf-faq__answer">{{ item.answer.value | newline_to_br }}</div>
+                {%- endif -%}
+              </details>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
   </script>
 {%- endif -%}
 
