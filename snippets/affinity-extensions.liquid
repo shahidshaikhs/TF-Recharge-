@@ -6,9 +6,126 @@
   - "Did you know" custom_extension data bridge (metaobject: did_you_know_upcoming_orders)
 {%- endcomment -%}
 
-{%- comment -%} === 1. Portal CSS (future portal re-skin styles go here) === {%- endcomment -%}
+{%- comment -%} === 1. Portal CSS === {%- endcomment -%}
 
-{%- comment -%} === 2. Slot templates (none for this task) === {%- endcomment -%}
+<style>
+  .cf-did-you-know {
+    background-color: #E6F0F8;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .cf-did-you-know__text-lockup {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 20px 20px 20px 16px;
+  }
+
+  .cf-did-you-know__heading {
+    display: flex;
+    flex-direction: row;
+    gap: 24px;
+  }
+
+  .cf-did-you-know__heading-lockup {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+    min-width: 0;
+    padding-top: 8px;
+  }
+
+  .cf-did-you-know__eyebrow {
+    font-family: var(--font-subheading--family);
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0.56px;
+    text-transform: uppercase;
+    color: #202635;
+    margin: 0;
+  }
+
+  .cf-did-you-know__headline {
+    font-family: var(--font-body--family);
+    font-size: 16px;
+    line-height: 22px;
+    color: #202635;
+    margin: 0;
+  }
+
+  .cf-did-you-know__icon {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+  }
+
+  .cf-did-you-know__icon svg {
+    width: 40px;
+    height: 40px;
+    display: block;
+  }
+
+  .cf-did-you-know__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    border-bottom: 1px solid #202635;
+    padding-bottom: 4px;
+    text-decoration: none;
+    color: #202635;
+    font-family: var(--font-body--family);
+    font-size: 14px;
+    line-height: 20px;
+    align-self: flex-start;
+  }
+
+  .cf-did-you-know__cta-arrow {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 16px;
+    height: 16px;
+    font-size: 11px;
+    line-height: 13px;
+    font-weight: 500;
+  }
+</style>
+
+{%- comment -%} === 2. Slot templates === {%- endcomment -%}
+
+{%- liquid
+  assign dyk_sub = shop.metaobjects.did_you_know_subscriptions_footer.values | first
+-%}
+
+{%- if dyk_sub != blank -%}
+  <script type="text/html" data-recharge-slot="subscriptions.footer">
+    <div class="cf-did-you-know">
+      <div class="cf-did-you-know__text-lockup">
+        <div class="cf-did-you-know__heading">
+          <div class="cf-did-you-know__heading-lockup">
+            {%- if dyk_sub.eyebrow.value != blank -%}
+              <span class="cf-did-you-know__eyebrow">{{ dyk_sub.eyebrow.value }}</span>
+            {%- endif -%}
+            {%- if dyk_sub.headline.value != blank -%}
+              <p class="cf-did-you-know__headline">{{ dyk_sub.headline.value | newline_to_br }}</p>
+            {%- endif -%}
+          </div>
+          <div class="cf-did-you-know__icon">
+            {{ 'icon.svg' | inline_asset_content }}
+          </div>
+        </div>
+        {%- if dyk_sub.cta_label.value != blank and dyk_sub.cta_url.value != blank -%}
+          <a href="{{ dyk_sub.cta_url.value }}" class="cf-did-you-know__cta">
+            {{ dyk_sub.cta_label.value }}
+            <span class="cf-did-you-know__cta-arrow">→</span>
+          </a>
+        {%- endif -%}
+      </div>
+    </div>
+  </script>
+{%- endif -%}
 
 {%- comment -%} === 3. Data output scripts === {%- endcomment -%}
 
