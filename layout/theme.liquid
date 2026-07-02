@@ -140,5 +140,9 @@
     {% if settings.quick_add or settings.mobile_quick_add %}
       {% render 'quick-add-modal' %}
     {% endif %}
+
+    {% if request.path contains "/tools/recurring" %}
+      {% render 'affinity-extensions' %}
+    {% endif %}
   </body>
 </html>

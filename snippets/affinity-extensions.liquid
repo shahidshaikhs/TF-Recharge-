@@ -1,0 +1,33 @@
+{%- comment -%}
+  Affinity portal hub snippet — single entry point for all Recharge portal customizations.
+  Rendered only on /tools/recurring pages (guarded in layout/theme.liquid).
+
+  Current extensions:
+  - "Did you know" custom_extension data bridge (metaobject: did_you_know_upcoming_orders)
+{%- endcomment -%}
+
+{%- comment -%} === 1. Portal CSS (future portal re-skin styles go here) === {%- endcomment -%}
+
+{%- comment -%} === 2. Slot templates (none for this task) === {%- endcomment -%}
+
+{%- comment -%} === 3. Data output scripts === {%- endcomment -%}
+
+{%- liquid
+  assign dyk = shop.metaobjects.did_you_know_upcoming_orders.values | first
+-%}
+
+{%- if dyk != blank -%}
+  <script type="application/json" id="cf-did-you-know-data">
+    {
+      {%- if dyk.image.value != blank -%}
+        "image": {{ dyk.image.value | image_url: width: 720 | json }},
+      {%- endif -%}
+      "eyebrow": {{ dyk.eyebrow.value | default: "" | json }},
+      "heading": {{ dyk.heading.value | default: "" | json }},
+      "link_label": {{ dyk.link_label.value | default: "" | json }},
+      "link_url": {{ dyk.link_url.value | default: "" | json }}
+    }
+  </script>
+{%- endif -%}
+
+{%- comment -%} === 4. Portal JS (custom_extension manages its own lifecycle — no JS needed here) === {%- endcomment -%}
