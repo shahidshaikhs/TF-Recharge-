@@ -91,39 +91,178 @@
     line-height: 13px;
     font-weight: 500;
   }
+
+  .cf-did-you-know + .cf-articles {
+    margin-block-start: 32px;
+  }
+
+  .cf-articles__scroll {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .cf-articles__scroll::-webkit-scrollbar {
+    display: none;
+  }
+
+  .cf-articles__card {
+    flex: 0 0 312px;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #E6F0F8;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .cf-articles__image {
+    display: block;
+    width: 100%;
+    aspect-ratio: 312 / 175;
+    object-fit: cover;
+  }
+
+  .cf-articles__text-lockup {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    justify-content: space-between;
+    padding: 12px 16px 16px 16px;
+    flex: 1;
+  }
+
+  .cf-articles__heading-lockup {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    justify-content: flex-end;
+    padding-top: 8px;
+  }
+
+  .cf-articles__eyebrow {
+    font-family: var(--font-subheading--family);
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0.56px;
+    text-transform: uppercase;
+    color: #202635;
+    margin: 0;
+  }
+
+  .cf-articles__headline {
+    font-family: var(--font-heading--family);
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 25px;
+    color: #202635;
+    margin: 0;
+  }
+
+  .cf-articles__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    border-bottom: 1px solid #202635;
+    padding-bottom: 4px;
+    text-decoration: none;
+    color: #202635;
+    font-family: var(--font-heading--family);
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    align-self: flex-start;
+  }
+
+  .cf-articles__link:hover {
+    opacity: 0.7;
+  }
+
+  .cf-articles__link-arrow {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 16px;
+    height: 16px;
+    font-family: var(--font-body--family);
+    font-weight: 500;
+    font-size: 11px;
+    line-height: 13px;
+  }
 </style>
 
 {%- comment -%} === 2. Slot templates === {%- endcomment -%}
 
 {%- liquid
   assign dyk_sub = shop.metaobjects.did_you_know_subscriptions_footer.values | first
+  assign articles_wrapper = shop.metaobjects.articles_recharge_subscription_footer.values | first
 -%}
 
-{%- if dyk_sub != blank -%}
+{%- if dyk_sub != blank or articles_wrapper != blank -%}
   <script type="text/html" data-recharge-slot="subscriptions.footer">
-    <div class="cf-did-you-know">
-      <div class="cf-did-you-know__text-lockup">
-        <div class="cf-did-you-know__heading">
-          <div class="cf-did-you-know__heading-lockup">
-            {%- if dyk_sub.eyebrow.value != blank -%}
-              <span class="cf-did-you-know__eyebrow">{{ dyk_sub.eyebrow.value }}</span>
-            {%- endif -%}
-            {%- if dyk_sub.headline.value != blank -%}
-              <p class="cf-did-you-know__headline">{{ dyk_sub.headline.value | newline_to_br }}</p>
-            {%- endif -%}
+    {%- if dyk_sub != blank -%}
+      <div class="cf-did-you-know">
+        <div class="cf-did-you-know__text-lockup">
+          <div class="cf-did-you-know__heading">
+            <div class="cf-did-you-know__heading-lockup">
+              {%- if dyk_sub.eyebrow.value != blank -%}
+                <span class="cf-did-you-know__eyebrow">{{ dyk_sub.eyebrow.value }}</span>
+              {%- endif -%}
+              {%- if dyk_sub.headline.value != blank -%}
+                <p class="cf-did-you-know__headline">{{ dyk_sub.headline.value | newline_to_br }}</p>
+              {%- endif -%}
+            </div>
+            <div class="cf-did-you-know__icon">
+              {{ 'icon.svg' | inline_asset_content }}
+            </div>
           </div>
-          <div class="cf-did-you-know__icon">
-            {{ 'icon.svg' | inline_asset_content }}
-          </div>
+          {%- if dyk_sub.cta_label.value != blank and dyk_sub.cta_url.value != blank -%}
+            <a href="{{ dyk_sub.cta_url.value }}" class="cf-did-you-know__cta">
+              {{ dyk_sub.cta_label.value }}
+              <span class="cf-did-you-know__cta-arrow">→</span>
+            </a>
+          {%- endif -%}
         </div>
-        {%- if dyk_sub.cta_label.value != blank and dyk_sub.cta_url.value != blank -%}
-          <a href="{{ dyk_sub.cta_url.value }}" class="cf-did-you-know__cta">
-            {{ dyk_sub.cta_label.value }}
-            <span class="cf-did-you-know__cta-arrow">→</span>
-          </a>
-        {%- endif -%}
       </div>
-    </div>
+    {%- endif -%}
+    {%- if articles_wrapper != blank and articles_wrapper.article.value != blank -%}
+      <div class="cf-articles">
+        <div class="cf-articles__scroll">
+          {%- for article in articles_wrapper.article.value -%}
+            <article class="cf-articles__card">
+              {%- if article.image.value != blank -%}
+                <img
+                  src="{{ article.image.value | image_url: width: 624 }}"
+                  alt="{{ article.eyebrow.value | default: '' | escape }}"
+                  class="cf-articles__image"
+                  loading="lazy"
+                  width="312"
+                  height="175"
+                >
+              {%- endif -%}
+              <div class="cf-articles__text-lockup">
+                <div class="cf-articles__heading-lockup">
+                  {%- if article.eyebrow.value != blank -%}
+                    <span class="cf-articles__eyebrow">{{ article.eyebrow.value }}</span>
+                  {%- endif -%}
+                  {%- if article.headline.value != blank -%}
+                    <p class="cf-articles__headline">{{ article.headline.value | newline_to_br }}</p>
+                  {%- endif -%}
+                </div>
+                {%- if article.link_label.value != blank and article.link_url.value != blank -%}
+                  <a href="{{ article.link_url.value }}" class="cf-articles__link">
+                    {{ article.link_label.value }}
+                    <span class="cf-articles__link-arrow">&#8594;</span>
+                  </a>
+                {%- endif -%}
+              </div>
+            </article>
+          {%- endfor -%}
+        </div>
+      </div>
+    {%- endif -%}
   </script>
 {%- endif -%}
 
