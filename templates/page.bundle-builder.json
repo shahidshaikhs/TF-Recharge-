@@ -1,0 +1,14 @@
+{
+  "sections": {
+    "main": {
+      "type": "bundle-builder",
+      "settings": {
+        "padding-block-start": 40,
+        "padding-block-end": 80
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}
