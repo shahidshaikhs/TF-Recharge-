@@ -1,8 +1,22 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
       "type": "bundle-builder",
       "settings": {
+        "product": "customisable-bundle",
+        "heading_text": "Build Your Box",
+        "products_per_row": 4,
+        "mobile_products_per_row": "2",
+        "color_scheme": "",
         "padding-block-start": 40,
         "padding-block-end": 80
       }
