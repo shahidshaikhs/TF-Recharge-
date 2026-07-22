@@ -42,9 +42,11 @@
   <div class="bundle-builder__quick-view-drawer" ref="quickViewDrawer"></div>
 </bundle-builder-section>
 
-{% javascript %}
-  import '@theme/../assets/bundle-builder.js';
-{% endjavascript %}
+<script
+  src="{{ 'bundle-builder.js' | asset_url }}"
+  type="module"
+  fetchpriority="low"
+></script>
 
 {% stylesheet %}
   .bundle-builder {
