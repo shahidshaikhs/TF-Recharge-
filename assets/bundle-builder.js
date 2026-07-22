@@ -319,7 +319,7 @@ class BundleBuilderSection extends Component {
   }
 
   handleAddProduct(event) {
-    const btn = event.currentTarget;
+    const btn = event.target;
     const productId = btn.dataset.productId;
     const variantId = btn.dataset.variantId;
     const collectionId = btn.dataset.collectionId;
@@ -345,7 +345,7 @@ class BundleBuilderSection extends Component {
   }
 
   handleIncrement(event) {
-    const btn = event.currentTarget;
+    const btn = event.target;
     const productId = btn.dataset.productId;
     const variantId = btn.dataset.variantId;
     const collectionId = btn.dataset.collectionId;
@@ -371,7 +371,7 @@ class BundleBuilderSection extends Component {
   }
 
   handleDecrement(event) {
-    const btn = event.currentTarget;
+    const btn = event.target;
     const productId = btn.dataset.productId;
     const variantId = btn.dataset.variantId;
 
@@ -388,7 +388,7 @@ class BundleBuilderSection extends Component {
   }
 
   handleRemoveSelection(event) {
-    const btn = event.currentTarget;
+    const btn = event.target;
     const productId = btn.dataset.productId;
     const variantId = btn.dataset.variantId;
 
@@ -452,7 +452,7 @@ class BundleBuilderSection extends Component {
   }
 
   handleSizeSelect(event) {
-    const btn = event.currentTarget;
+    const btn = event.target;
     const variantId = btn.dataset.variantId;
     this.selectedVariant = this.bundle.variants.find(v => String(v.id) === String(variantId)) || this.selectedVariant;
     this.selections = [];
@@ -545,7 +545,7 @@ class BundleBuilderSection extends Component {
   }
 
   handlePlanSelect(event) {
-    const idx = parseInt(event.currentTarget.dataset.planIndex, 10);
+    const idx = parseInt(event.target.dataset.planIndex, 10);
     const allocations = this.selectedVariant?.selling_plan_allocations || [];
     if (allocations[idx]) {
       this.selectedSellingPlan = allocations[idx].selling_plan || null;
@@ -714,7 +714,7 @@ class BundleBuilderSection extends Component {
   }
 
   handleQuickView(event) {
-    const btn = event.currentTarget;
+    const btn = event.target;
     const drawer = this.refs.quickViewDrawer;
     if (!drawer) return;
 
